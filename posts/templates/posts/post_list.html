@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
+{% block title %}Публикации{% endblock %}
+
 {% block content %}
 <div class="alert alert-primary text-center" role="alert">
-    <span style="font-size: 36px">{{ settings.site_description }}</span>
+    <span style="font-size: 36px">Публикации</span>
 </div>
     <hr>
     {% for post in post_list %}
@@ -15,5 +17,4 @@
     </ul>
         <hr>
     {% endfor %}
-    <a href="{% url 'posts:posts' %}" class="btn btn-success">Все публикации</a>
 {% endblock %}

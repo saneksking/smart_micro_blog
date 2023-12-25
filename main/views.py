@@ -6,7 +6,7 @@ from posts.models import Post
 
 def index(request):
     settings = SiteSettings.objects.last()
-    post_list = Post.objects.all()[:10]
+    post_list = Post.objects.filter(status=True)[:10]
     context = {
         'settings': settings,
         'post_list': post_list,
