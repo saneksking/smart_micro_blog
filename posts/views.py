@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from posts.models import Post
 
 
@@ -12,4 +12,8 @@ def posts(request):
 
 
 def post_detail(request, post_id):
-    return HttpResponse('Страница определённого поста')
+    post = get_object_or_404(Post, id=post_id)
+    context = {
+        'post': post,
+    }
+    return render(request, 'posts/post_detail.html', context)
