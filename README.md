@@ -1,1 +1,1 @@
-# smart_blog
+# smart_micro_blog
