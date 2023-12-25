@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}Домашняя страница{% endblock %}
-
 {% block content %}
-
+<div class="alert alert-primary text-center" role="alert">
+    <span style="font-size: 36px">{{ settings.site_description }}</span>
+</div>
+    <hr>
+    {% for post in post_list %}
+        <ul class="list-group" style="box-shadow: 0 0 10px #CFE2FF">
+  <li class="list-group-item active">Дата публикации: {{ post.updated_at }}</li>
+  <li class="list-group-item">Автор: {{ post.author }}</li>
+  <li class="list-group-item">Название: {{ post.name }}</li>
+  <li class="list-group-item">Описание: {{ post.description }}</li>
+  <li class="list-group-item">Текст: {{ post }}... <a href="#" class="text-primary" style="text-decoration: none">Читать полностью</a></li>
+    </ul>
+        <hr>
+    {% endfor %}
+    <a href="{% url 'posts:posts' %}" class="btn btn-success">Все публикации</a>
 {% endblock %}
