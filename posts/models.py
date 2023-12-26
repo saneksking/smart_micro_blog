@@ -17,3 +17,15 @@ class Post(models.Model):
     def __str__(self):
         return self.text[:300]
 
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment')
+    text = models.TextField(default='', verbose_name='Комментарий')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
+
+    class Meta:
+        ordering = ('-created_at', )
+
+    def __str__(self):
+        return self.text
