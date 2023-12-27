@@ -20,14 +20,16 @@ def posts(request):
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     comment_list = Comment.objects.filter(post_id=post.id)
+    author = request.POST.get('new_author', None)
     new_comment = request.POST.get('new_comment', None)
     if 'btn' in request.POST:
         comment = Comment.objects.create(
+            author=author,
+            text=new_comment,
             post_id=post.id,
-            text=new_comment
         )
         comment.save()
-
+        return redirect(reverse('posts:post_detail', args=(post.id,)))
     context = {
         'post': post,
         'comment_list': comment_list,
