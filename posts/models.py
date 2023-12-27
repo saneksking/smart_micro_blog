@@ -30,3 +30,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Grade(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='grade')
+    grade_status = models.BooleanField(null=True)
+

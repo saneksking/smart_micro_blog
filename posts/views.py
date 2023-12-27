@@ -2,8 +2,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-
-from posts.models import Post, Comment
+from posts.models import Post, Comment, Grade
 
 
 def posts(request):
@@ -37,3 +36,21 @@ def post_detail(request, post_id):
     return render(request, 'posts/post_detail.html', context)
 
 
+def post_grade_like(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    grade = Grade.objects.create(
+        post_id=post.id,
+        grade_status=True,
+    )
+    grade.save()
+    return redirect(reverse('posts:post_detail', args=(post.id,)))
+
+
+def post_grade_dislike(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    grade = Grade.objects.create(
+        post_id=post.id,
+        grade_status=False,
+    )
+    grade.save()
+    return redirect(reverse('posts:post_detail', args=(post.id,)))

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load post_tags %}
 
 {% block title %}{{ post.name }}{% endblock %}
 
@@ -12,6 +13,9 @@
           <li class="list-group-item">Текст: {{ post.text|linebreaks|urlize }}</li>
         </ul>
     <br>
+    <a href="{% url 'posts:grade_like' post.id %}" class="btn btn-success">👍 {% post_grade_like post.id %}</a>
+    <a href="{% url 'posts:grade_dislike' post.id %}" class="btn btn-danger">👎 {% post_grade_dislike post.id %}</a>
+    <br>
     <hr>
     {% for comment in comment_list %}
         <br>
@@ -24,10 +28,10 @@
     <hr>
     <form action="" method="post">
           {% csrf_token %}
-          <label for="new_author">Автор:</label><textarea id="new_author" name="new_author" class="form-control"></textarea>
-          <label for="new_comment">Комментарий:</label><textarea id="new_comment" name="new_comment" class="form-control"></textarea>
-      <br>
-          <button type="submit" class="btn btn-success" name="btn">Отправить</button>
+        <label for="new_author">Автор:</label><textarea id="new_author" name="new_author" class="form-control"></textarea>
+        <label for="new_comment">Комментарий:</label><textarea id="new_comment" name="new_comment" class="form-control"></textarea>
+        <br>
+        <button type="submit" class="btn btn-success" name="btn">Отправить</button>
     </form>
     <hr>
     <a href="{% url 'posts:posts' %}" class="btn btn-success">Все публикации</a>
