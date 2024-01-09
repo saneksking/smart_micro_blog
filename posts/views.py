@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from posts.models import Post, Comment, Grade
+from posts.forms import CreatePostForm
 
 
 def posts(request):
@@ -56,3 +57,15 @@ def post_grade_dislike(request, post_id):
     )
     grade.save()
     return redirect(reverse('posts:post_detail', args=(post.id,)))
+
+
+def post_create(request):
+    form = CreatePostForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('posts:posts'))
+    context = {
+        'form': form,
+    }
+    return render(request, 'posts/post_create.html', context)

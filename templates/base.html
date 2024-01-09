@@ -24,6 +24,9 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'posts:posts' %}">Публикации<span class="badge badge-black" style="color: lightblue">{% post_count %}</span></a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'posts:post_create' %}" style="color: green">Создать +</a>
+        </li>
         <li class="nav-item dropdown">
       </ul>
     </div>
