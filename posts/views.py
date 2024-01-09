@@ -1,5 +1,4 @@
 from django.core.paginator import Paginator
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from posts.models import Post, Comment, Grade
@@ -7,7 +6,7 @@ from posts.models import Post, Comment, Grade
 
 def posts(request):
     post_list = Post.objects.filter(status=True)
-    paginator = Paginator(post_list, 10)
+    paginator = Paginator(post_list, 5)
     page = request.GET.get('page')
     objects = paginator.get_page(page)
     context = {
@@ -29,9 +28,12 @@ def post_detail(request, post_id):
         )
         comment.save()
         return redirect(reverse('posts:post_detail', args=(post.id,)))
+    paginator = Paginator(comment_list, 5)
+    comment = request.GET.get('page')
+    objects = paginator.get_page(comment)
     context = {
         'post': post,
-        'comment_list': comment_list,
+        'objects': objects,
     }
     return render(request, 'posts/post_detail.html', context)
 

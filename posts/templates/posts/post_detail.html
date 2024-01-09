@@ -17,7 +17,7 @@
     <a href="{% url 'posts:grade_dislike' post.id %}" class="btn btn-danger">👎 {% post_grade_dislike post.id %}</a>
     <br>
     <hr>
-    {% for comment in comment_list %}
+    {% for comment in objects %}
         <br>
         <ul class="list-group" style="box-shadow: 0 0 10px #CFE2FF">
           <li class="list-group-item active">Дата публикации: {{ comment.updated_at }}</li>
@@ -25,6 +25,49 @@
           <li class="list-group-item">Текст: {{ comment.text|linebreaks|urlize }}</li>
         </ul>
     {% endfor %}
+    <br>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% if objects.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ objects.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for page in objects.paginator.page_range %}
+                    {% if objects.number == page %}
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link" href="#">{{ page }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if objects.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ objects.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ objects.paginator.num_pages }}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     <hr>
     <form action="" method="post">
           {% csrf_token %}
