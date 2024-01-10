@@ -21,7 +21,7 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comment')
     text = models.TextField(default='', verbose_name='Комментарий')
-    author = models.CharField(max_length=50, verbose_name='Автор', default='Аноним')
+    author = models.CharField(max_length=50, verbose_name='Автор', default='Гость')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
 
@@ -35,4 +35,5 @@ class Comment(models.Model):
 class Grade(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='grade')
     grade_status = models.BooleanField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 

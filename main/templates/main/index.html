@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load post_tags %}
 
 {% block content %}
     <h1 style="font-size: 36px" class="text-center text-primary">{{ settings.site_description }}</h1>
@@ -10,8 +11,8 @@
   <li class="list-group-item">Название: {{ post.name }}</li>
   <li class="list-group-item">Описание: {{ post.description }}</li>
   <li class="list-group-item">Текст: {{ post }}... <a href="{% url 'posts:post_detail' post.id %}" class="text-primary" style="text-decoration: none">Читать полностью</a></li>
+  <li class="list-group-item">💬 {% comment_count post.id %}| 👍 {% post_grade_like post.id %} | 👎 {% post_grade_dislike post.id%}</li>
     </ul>
         <hr>
     {% endfor %}
-    <a href="{% url 'posts:posts' %}" class="btn btn-success">Все публикации</a>
 {% endblock %}

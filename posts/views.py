@@ -23,7 +23,7 @@ def post_detail(request, post_id):
     new_comment = request.POST.get('new_comment', None)
     if 'btn' in request.POST:
         comment = Comment.objects.create(
-            author=author,
+            author=author or 'Гость',
             text=new_comment,
             post_id=post.id,
         )

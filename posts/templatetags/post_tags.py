@@ -1,5 +1,5 @@
 from django import template
-from posts.models import Grade, Post
+from posts.models import Grade, Post, Comment
 
 register = template.Library()
 
@@ -17,3 +17,8 @@ def post_grade_dislike(post_id):
 @register.simple_tag
 def post_count():
     return Post.objects.all().count()
+
+
+@register.simple_tag
+def comment_count(post_id):
+    return Comment.objects.filter(post_id=post_id).count()
