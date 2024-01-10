@@ -6,6 +6,8 @@ from posts.forms import CreatePostForm
 
 
 def posts(request):
+    print(request.method)
+    print(request.META)
     post_list = Post.objects.filter(status=True)
     paginator = Paginator(post_list, 5)
     page = request.GET.get('page')
@@ -60,8 +62,10 @@ def post_grade_dislike(request, post_id):
 
 
 def post_create(request):
+    print(request.method)
     form = CreatePostForm(request.POST or None)
     if request.method == 'POST':
+        print(request.POST)
         if form.is_valid():
             form.save()
             return redirect(reverse('posts:posts'))
