@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from posts.models import Post, Comment, Grade
 from posts.forms import CreatePostForm
-
+from smart.get_ip_master import IpMaster
 
 def posts(request):
     post_list = Post.objects.filter(status=True)
@@ -41,22 +41,34 @@ def post_detail(request, post_id):
 
 def post_grade_like(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    grade = Grade.objects.create(
-        post_id=post.id,
-        grade_status=True,
-    )
-    grade.save()
-    return redirect(reverse('posts:post_detail', args=(post.id,)))
+    ip = IpMaster.get_ip(request=request)
+    grade = Grade.objects.filter(post_id=post.id, ip=ip, grade_status=True).exists()
+    if grade:
+        return redirect(reverse('posts:post_detail', args=(post.id,)))
+    else:
+        create_grade = Grade.objects.create(
+            post_id=post.id,
+            grade_status=True,
+            ip=ip,
+        )
+        create_grade.save()
+        return redirect(reverse('posts:post_detail', args=(post.id,)))
 
 
 def post_grade_dislike(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    grade = Grade.objects.create(
-        post_id=post.id,
-        grade_status=False,
-    )
-    grade.save()
-    return redirect(reverse('posts:post_detail', args=(post.id,)))
+    post_id = get_object_or_404(Post, id=post_id)
+    ip = IpMaster.get_ip(request=request)
+    grade = Grade.objects.filter(post_id=post_id.id, ip=ip, grade_status=False).exists()
+    if grade:
+        return redirect(reverse('posts:post_detail', args=(post_id.id,)))
+    else:
+        create_grade = Grade.objects.create(
+            post_id=post_id.id,
+            grade_status=False,
+            ip=ip,
+        )
+        create_grade.save()
+        return redirect(reverse('posts:post_detail', args=(post_id.id,)))
 
 
 def post_create(request):

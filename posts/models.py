@@ -35,5 +35,6 @@ class Comment(models.Model):
 class Grade(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='grade')
     grade_status = models.BooleanField(null=True)
+    ip = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
