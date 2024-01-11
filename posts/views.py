@@ -1,14 +1,14 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from posts.models import Post, Comment, Grade
+from posts.models import Post, Comment, Grade, Watcher
 from posts.forms import CreatePostForm
 from smart.get_ip_master import IpMaster
 
+
 def posts(request):
-    print(request.method)
-    print(request.META)
     post_list = Post.objects.filter(status=True)
+
     paginator = Paginator(post_list, 5)
     page = request.GET.get('page')
     objects = paginator.get_page(page)
@@ -20,6 +20,15 @@ def posts(request):
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+    ip = IpMaster.get_ip(request=request)
+    watcher = Watcher.objects.filter(ip=ip, post_id=post.id)
+    if watcher.exists():
+        update_watcher = Watcher.objects.get(ip=ip, post_id=post.id)
+        update_watcher.counter += 1
+        update_watcher.save()
+    else:
+        watch = Watcher.objects.create(ip=ip, post_id=post.id, counter=1)
+        watch.save()
     comment_list = Comment.objects.filter(post_id=post.id)
     author = request.POST.get('new_author', None)
     new_comment = request.POST.get('new_comment', None)

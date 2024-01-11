@@ -1,5 +1,5 @@
 from django import template
-from posts.models import Grade, Post, Comment
+from posts.models import Grade, Post, Comment, Watcher
 
 register = template.Library()
 
@@ -22,3 +22,16 @@ def post_count():
 @register.simple_tag
 def comment_count(post_id):
     return Comment.objects.filter(post_id=post_id).count()
+
+
+@register.simple_tag
+def unique_watch(post_id):
+    return Watcher.objects.filter(post_id=post_id).count()
+
+
+@register.simple_tag
+def watch(post_id):
+    list_watcher = Watcher.objects.filter(post_id=post_id).values_list('counter', flat=True)
+    return sum(list_watcher)
+
+

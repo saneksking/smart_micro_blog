@@ -38,3 +38,9 @@ class Grade(models.Model):
     ip = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
+
+class Watcher(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='watcher')
+    ip = models.CharField(max_length=50)
+    counter = models.PositiveIntegerField(default=0)
+
