@@ -11,6 +11,9 @@
           <li class="list-group-item list-group-item-success">Автор: {{ post.author }}</li>
           <li class="list-group-item">Описание: {{ post.description }}</li>
           <li class="list-group-item">Текст: {{ post.text|linebreaks|urlize }}</li>
+          {% if user.is_authenticated %}
+              <li class="list-group-item"><a href="{% url 'posts:post_update' post.id %}" class="btn btn-warning">Изменить</a><a href="{% url 'posts:post_delete' post.id %}" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить этот пост?')">Удалить</a></li>
+          {% endif %}
         </ul>
     <br>
     <a href="{% url 'posts:grade_like' post.id %}" class="btn btn-success">👍 {% post_grade_like post.id %}</a>
@@ -23,6 +26,9 @@
           <li class="list-group-item active">Дата публикации: </li>
           <li class="list-group-item list-group-item-success">Автор: {{ comment.author }}</li>
           <li class="list-group-item">Текст: {{ comment.text|linebreaks|urlize }}</li>
+          {% if user.is_authenticated %}
+              <li class="list-group-item"><a href="{% url 'posts:comment_delete' post.id comment.id %}" class="btn btn-danger" onclick="return confirm('Вы действительно хотите удалить этот комментарий?')">Удалить</a></li>
+          {% endif %}
         </ul>
     {% endfor %}
     <br>

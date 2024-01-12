@@ -83,10 +83,8 @@ def post_grade_dislike(request, post_id):
 
 
 def post_create(request):
-    print(request.method)
     form = CreatePostForm(request.POST or None)
     if request.method == 'POST':
-        print(request.POST)
         if form.is_valid():
             form.save()
             return redirect(reverse('posts:posts'))
@@ -94,3 +92,30 @@ def post_create(request):
         'form': form,
     }
     return render(request, 'posts/post_create.html', context)
+
+
+def post_update(request, post_id):
+    post = Post.objects.get(id=post_id)
+    form = CreatePostForm(request.POST, instance=post.id)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('posts:posts'))
+    context = {
+        'post': post,
+        'form': form,
+    }
+    return render(request, 'posts/post_update.html', context)
+
+
+def post_delete(request, post_id):
+    post = Post.objects.get(id=post_id)
+    post.delete()
+    return redirect('posts:posts')
+
+
+def comment_delete(request, post_id, comment_id):
+    post = Post.objects.get(id=post_id)
+    comment = Comment.objects.get(id=comment_id)
+    comment.delete()
+    return redirect(reverse('posts:post_detail', args=(post.id,)))
